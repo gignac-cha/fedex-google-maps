@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "rm -rf ../web/static",
     "build": "react-scripts build",
+    "postbuild": "mv -f build ../web/static",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

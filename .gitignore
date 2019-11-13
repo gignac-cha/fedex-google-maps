@@ -502,3 +502,6 @@ buck-out/
 .history
 
 # End of https://www.gitignore.io/api/node,flask,python,reactnative,visualstudiocode
+
+
+!ui/public

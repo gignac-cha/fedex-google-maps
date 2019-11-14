@@ -33,6 +33,7 @@ class App extends React.Component {
   }
   componentDidMount() {
     this.getApiKey();
+    $('#trackingNumber').focus();
   }
   render() {
     return (

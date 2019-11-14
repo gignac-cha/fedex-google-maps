@@ -42,6 +42,9 @@ class App extends React.Component {
             <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" height="40" />
             <img src="https://www.gstatic.com/images/branding/product/2x/maps_512dp.png" height="50" />
           </div>
+          <div className="col col-9 h1 text-center text-white">
+            {this.state.queryTrackingNumber.length > 0 ? `Tracking Number: ${this.state.queryTrackingNumber}` : null}
+          </div>
         </div>
         <div className="row mt-4">
           <label htmlFor="trackingNumber" className="col col-12 offset-md-2 col-md-2">Tracking Number</label>
@@ -169,12 +172,10 @@ class App extends React.Component {
   onKeyUpTrackingNumber = e => {
     if (e.keyCode === 0x0D) {
       this.track(this.state.trackingNumber);
-      this.setState({ trackingNumber: '' });
     }
   }
   onClickTrack = e => {
     this.track(this.state.trackingNumber);
-    this.setState({ trackingNumber: '' });
   }
 
   getApiKey = async () => {
@@ -188,6 +189,7 @@ class App extends React.Component {
     this.setState({ apiKey, googleMapsUrl });
   }
   track = async trackingNumber => {
+    const queryTrackingNumber = trackingNumber;
     const { data } = await axios.get(`/api/v1/track/${trackingNumber}`);
     const { successful, packageList } = data;
     const filteredPackageList = _.filter(packageList, package_ => package_.isSuccessful);
@@ -223,7 +225,7 @@ class App extends React.Component {
       selectedPackage.expanded = true;
     }
     const googleMapsUrl = this.getGoogleMapsUrl(selectedPackage);
-    this.setState({ packageList, filteredPackageList, selectedPackage, googleMapsUrl });
+    this.setState({ trackingNumber: '', queryTrackingNumber, packageList, filteredPackageList, selectedPackage, googleMapsUrl });
   }
   getGoogleMapsUrl = package_ => {
     const url = new URL(GOOGLE_MAPS_URL);

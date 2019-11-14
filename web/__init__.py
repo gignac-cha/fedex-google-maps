@@ -52,26 +52,32 @@ def _api_get_track(trackingNumber):
     data = response.json()
     TrackPackagesResponse = data["TrackPackagesResponse"]
     successful = TrackPackagesResponse["successful"]
-    packageList = TrackPackagesResponse["packageList"]
-    for package in packageList:
-      originCity = package["originCity"]
-      originStateCD = package["originStateCD"]
-      originCntryCD = package["originCntryCD"]
-      destCity = package["destCity"]
-      destStateCD = package["destStateCD"]
-      destCntryCD = package["destCntryCD"]
-      scanEventList = list({
-        "date": scanEvent["date"],
-        "gmtOffset": scanEvent["gmtOffset"],
-        "scanLocation": scanEvent["scanLocation"],
-        "status": scanEvent["status"],
-        "statusCD": scanEvent["statusCD"],
-        "time": scanEvent["time"],
-      } for scanEvent in package["scanEventList"])
-      return flask.jsonify(successful=successful,
-        originCity=originCity, originStateCD=originStateCD, originCntryCD=originCntryCD,
-        destCity=destCity, destStateCD=destStateCD, destCntryCD=destCntryCD,
-        scanEventList=scanEventList)
+    packageList = [
+      {
+        "shipDt": package["shipDt"],
+        "tenderedDt": package["tenderedDt"],
+        "isSuccessful": package["isSuccessful"],
+        "keyStatus": package["keyStatus"],
+        "originCity": package["originCity"],
+        "originStateCD": package["originStateCD"],
+        "originCntryCD": package["originCntryCD"],
+        "destCity": package["destCity"],
+        "destStateCD": package["destStateCD"],
+        "destCntryCD": package["destCntryCD"],
+        "scanEventList": [
+          {
+            "date": scanEvent["date"],
+            "gmtOffset": scanEvent["gmtOffset"],
+            "scanLocation": scanEvent["scanLocation"],
+            "status": scanEvent["status"],
+            "statusCD": scanEvent["statusCD"],
+            "time": scanEvent["time"],
+          } for scanEvent in package["scanEventList"]
+        ],
+      }
+      for package in TrackPackagesResponse["packageList"]
+    ]
+    return flask.jsonify(successful=successful, packageList=packageList)
   except:
     pass
   return flask.jsonify({})

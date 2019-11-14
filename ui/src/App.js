@@ -37,9 +37,9 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="container p-4">
-        <div className="row mt-4">
-          <div className="col col-12 p-4" style={{ backgroundColor: '#4d148c' }}>
+      <div className="container">
+        <div className="row p-4" style={{ backgroundColor: '#4d148c' }}>
+          <div className="col col-3">
             <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" height="40" />
             <img src="https://www.gstatic.com/images/branding/product/2x/maps_512dp.png" height="50" />
           </div>
@@ -48,10 +48,13 @@ class App extends React.Component {
           </div>
         </div>
         <div className="row mt-4">
-          <label htmlFor="trackingNumber" className="col col-12 offset-md-2 col-md-2">Tracking Number</label>
-          <input id="trackingNumber" className="col col-12 col-md-4 form-control" value={this.state.trackingNumber} onChange={this.onChangeTrackingNumber} onKeyUp={this.onKeyUpTrackingNumber} />
-          <div className="col col-12 col-md-2">
-            <button className="btn btn-primary" onClick={this.onClickTrack}>Track!</button>
+          <label htmlFor="trackingNumber" className="col col-12 offset-md-2 col-md-2 col-form-label pl-4">Tracking Number</label>
+          <div className="col col-9 col-md-4 pl-4 p-1">
+            <input id="trackingNumber" className="form-control" value={this.state.trackingNumber} placeholder="Input tracking number here."
+              onChange={this.onChangeTrackingNumber} onKeyUp={this.onKeyUpTrackingNumber} />
+          </div>
+          <div className="col col-3 col-md-2 pr-4 p-1">
+            <button className="btn btn-primary w-100" onClick={this.onClickTrack}>Track!</button>
           </div>
         </div>
         <div className="row mt-4">

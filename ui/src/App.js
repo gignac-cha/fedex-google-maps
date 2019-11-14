@@ -101,7 +101,11 @@ class App extends React.Component {
   getApiKey = async () => {
     const { data } = await axios.get('/api/v1/api-key');
     const { apiKey } = data;
-    const googleMapsUrl = `${GOOGLE_MAPS_URL}?key=${apiKey}&origin=California&destination=Delaware`;
+    const url = new URL(GOOGLE_MAPS_URL);
+    url.searchParams.append('key', apiKey);
+    url.searchParams.append('origin', 'California');
+    url.searchParams.append('destination', 'Delaware');
+    const googleMapsUrl = url.toString();
     this.setState({ apiKey, googleMapsUrl });
   }
   track = async trackingNumber => {
@@ -111,8 +115,16 @@ class App extends React.Component {
     const last = _.last(scanEventList);
     const origin = `${originCity}, ${originStateCD}, ${originCntryCD}`;
     const destination = `${destCity}, ${destStateCD}, ${destCntryCD}`;
-    const waypoints = _.chain(scanEventList).reverse().drop(1).map(scanEvent => scanEvent.scanLocation).join('|').value();
-    const googleMapsUrl = `${GOOGLE_MAPS_URL}?key=${this.state.apiKey}&origin=${origin}&waypoints=${waypoints}&destination=${destination}`;
+    const url = new URL(GOOGLE_MAPS_URL);
+    url.searchParams.append('key', this.state.apiKey);
+    url.searchParams.append('origin', origin);
+    url.searchParams.append('destination', destination);
+    const filteredScanEventList = _.filter(scanEventList, scanEvent => scanEvent.scanLocation.length > 0);
+    if (filteredScanEventList.length > 0) {
+      const waypoints = _.chain(filteredScanEventList).reverse().map(scanEvent => scanEvent.scanLocation).join('|').value();
+      url.searchParams.append('waypoints', waypoints);
+    }
+    const googleMapsUrl = url.toString();
     this.setState({ origin, destination, scanEventList, googleMapsUrl });
   }
 }

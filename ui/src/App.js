@@ -123,7 +123,7 @@ class App extends React.Component {
     };
     const cardHeaderStyle = cardHeaderStyles[package_.keyStatus];
     return (
-      <div key={i} className="card mt-1">
+      <summary key={i} className="card mt-1">
         <div className={classnames('card-header', cardHeaderStyle)} onClick={() => { this.onClickPackage(i); }}>
           <FontAwesomeIcon icon={package_.expanded ? fas.faChevronDown : fas.faChevronRight} className="mr-2" />
           <b>{i + 1}.</b> {moment(package_.shipDt).format('YYYY-MM-DD')} (<b>{package_.origin}</b> → <b>{package_.destination}</b>)
@@ -147,7 +147,7 @@ class App extends React.Component {
             </tfoot>
           </table>
         </div>
-      </div>
+      </summary>
     );
   }
   renderScanEventList = scanEventList => {

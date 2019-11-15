@@ -125,7 +125,10 @@ class App extends React.Component {
     return (
       <summary key={i} className="card mt-1">
         <div className={classnames('card-header', cardHeaderStyle)} onClick={() => { this.onClickPackage(i); }}>
-          <FontAwesomeIcon icon={package_.expanded ? fas.faChevronDown : fas.faChevronRight} className="mr-2" />
+          <FontAwesomeIcon icon={fas.faChevronRight} className="mr-2" style={{
+            transition: 'all .35s ease',
+            transform: (package_.collapsing || package_.expanded) && !(package_.collapsing && package_.expanded) ? 'rotate(90deg)' : '',
+          }} />
           <b>{i + 1}.</b> {moment(package_.shipDt).format('YYYY-MM-DD')} (<b>{package_.origin}</b> → <b>{package_.destination}</b>)
         </div>
         <div id={`package-${i}`} className={classnames('card-body', 'p-0', { 'collapse': !package_.collapsing, 'show': !package_.collapsing && package_.expanded, 'collapsing': package_.collapsing })}>
